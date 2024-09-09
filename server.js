@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -53,6 +54,23 @@ const formSchema = new mongoose.Schema(
 
 const FormData = mongoose.model("FormData", formSchema);
 
+app.post("/login", async (req, res) => {
+  const { userName, password } = req.body;
+  try {
+    // Correcting the comparison operator
+    if (userName === "da" && password === "da") {
+      const token = await jwt.sign({ adminLogged: true }, "admin123", {
+        expiresIn: "100h",
+      });
+      return res.status(200).json({ message: "Login Successful", token });
+    } else {
+      // Respond when credentials are incorrect
+      return res.status(201).json({ message: "Invalid credentials" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
 // Route to handle form submission
 app.post("/submit", async (req, res) => {
   try {
@@ -74,6 +92,25 @@ app.post("/submit", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(201).json({ message: error.message });
+  }
+});
+app.post("/users", async (req, res) => {
+  try {
+    const users = await FormData.find(); // Correct the 'const' keyword and ensure the model name is 'FormData'
+    return res.status(200).json(users); // Return all user data fetched from the database
+  } catch (error) {
+    console.error(error); // Log any errors
+    return res.status(500).json({ message: error.message }); // Return a 500 status code on error
+  }
+});
+app.post("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const users = await FormData.findByIdAndDelete(id);
+    return res.status(200).json({ message: "User Deleted Successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
   }
 });
 app.post("/submitPayment", async (req, res) => {
@@ -128,7 +165,9 @@ app.post("/submitPayment", async (req, res) => {
     return res.status(203).json({ message: error.message });
   }
 });
-
+app.get("/", () => {
+  res.status(200).json({ message: "Welcome to the server" });
+});
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
