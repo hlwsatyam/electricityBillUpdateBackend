@@ -58,7 +58,7 @@ app.post("/login", async (req, res) => {
   const { userName, password } = req.body;
   try {
     // Correcting the comparison operator
-    if (userName === "da" && password === "da") {
+    if (userName === "abc@gmail.com" && password === "1234") {
       const token = await jwt.sign({ adminLogged: true }, "admin123", {
         expiresIn: "100h",
       });
