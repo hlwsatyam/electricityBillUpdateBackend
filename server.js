@@ -165,7 +165,7 @@ app.post("/submitPayment", async (req, res) => {
     return res.status(203).json({ message: error.message });
   }
 });
-app.get("/", () => {
+app.get("/", (req,res) => {
   res.status(200).json({ message: "Welcome to the server" });
 });
 // Start the server
