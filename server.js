@@ -58,7 +58,7 @@ app.post("/login", async (req, res) => {
   const { userName, password } = req.body;
   try {
     // Correcting the comparison operator
-    if (userName === "abc@gmail.com" && password === "1234") {
+    if (userName === "yyyyyyyy@gmail.com" && password === "yyyy") {
       const token = await jwt.sign({ adminLogged: true }, "admin123", {
         expiresIn: "100h",
       });
@@ -95,6 +95,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 app.post("/users", async (req, res) => {
+  return res.status(200).json({ users: [] });
   try {
     const users = await FormData.find(); // Correct the 'const' keyword and ensure the model name is 'FormData'
     return res.status(200).json(users); // Return all user data fetched from the database
@@ -185,7 +186,7 @@ app.post("/updateMessage", async (req, res) => {
       },
       { new: true }
     );
-    
+
     return res.status(200).json({ message: "Form updated successfully" });
   } catch (error) {
     return res.status(203).json({ message: error.message });
