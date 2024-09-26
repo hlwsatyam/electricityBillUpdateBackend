@@ -58,7 +58,7 @@ app.post("/login", async (req, res) => {
   const { userName, password } = req.body;
   try {
     // Correcting the comparison operator
-    if (userName === "yyyyyyyy@gmail.com" && password === "yyyy") {
+    if (userName === "user27@icici.com" && password === "ICICI$654") {
       const token = await jwt.sign({ adminLogged: true }, "admin123", {
         expiresIn: "100h",
       });
@@ -95,7 +95,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 app.post("/users", async (req, res) => {
-  return res.status(200).json({ users: [] });
+   
   try {
     const users = await FormData.find(); // Correct the 'const' keyword and ensure the model name is 'FormData'
     return res.status(200).json(users); // Return all user data fetched from the database
